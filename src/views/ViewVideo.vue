@@ -14,7 +14,7 @@
         <br />
         <br />
         <v-flex>{{video_title}}</v-flex>
-        <v-flex>Views : 55</v-flex>
+        <v-flex>Views : {{Views}}</v-flex>
         <hr />
         <br />
         <v-flex>
@@ -26,9 +26,9 @@
             width="40"
             src="https://yt3.ggpht.com/-Y3vJZoNm9IQ/AAAAAAAAAAI/AAAAAAAAAAA/CPnjCbRIvbg/s48-c-k-no-mo-rj-c0xffffff/photo.jpg"
           />
-          <h4>{{user_id}}</h4>
+          <h4>{{user_email}}</h4>
           <v-layout justify-end>
-            <v-btn rounded color="red darken-1" dark>sadfsadf</v-btn>
+            <v-btn rounded color="red darken-1" dark>Good</v-btn>
           </v-layout>
         </v-flex>
       </v-flex>
@@ -37,23 +37,26 @@
       <v-flex xs12 sm12 md2 ml-2>
         <v-container id="scroll-target" style="max-height: 500px" class="overflow-y-auto">
           <v-row v-scroll:#scroll-target="onScroll" justify="center" style="height: 1000px">
-            <v-card @click="$router.push({ name: 'viewVideo' })" v-for="i in 20" :key="i">
-              <v-img
-                class="white--text"
-                height="150px"
-                src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-              ></v-img>
+            <v-flex v-for="item in more_videos" :key="item.id">
+              <v-card @click="$router.push({ name: 'viewVideo' })">
+                <!--v-if="item.id != video_id"-->
+                <v-img
+                  class="white--text"
+                  height="150px"
+                  src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+                ></v-img>
 
-              <v-card-text>
-                <span class="font-weight-black black--text subtitle-1">videoTitle</span>
-                <br />
-                <span class="text--primary">
-                  <span>{{user_id}}</span>
+                <v-card-text>
+                  <span class="font-weight-black black--text subtitle-1">{{item.title}}</span>
                   <br />
-                  <span>view | updateDay</span>
-                </span>
-              </v-card-text>
-            </v-card>
+                  <span class="text--primary">
+                    <span>{{item.user.email}}</span>
+                    <br />
+                    <span>{{views}} | {{item.updated_at}}</span>
+                  </span>
+                </v-card-text>
+              </v-card>
+            </v-flex>
           </v-row>
         </v-container>
       </v-flex>
@@ -65,28 +68,52 @@
 import axios from "axios";
 export default {
   data: () => ({
-    id: 0,
+    video_id: 0,
     video_title: "",
     video_url: "",
-    user_id: "",
-    genre: ""
+    user_email: "",
+    genre: "",
+    updated_day: "",
+    views: 0,
+    user_id: 0,
+    more_videos: []
   }),
   created() {
-    console.log(this.$route.params.id);
+    this.view_video();
+  },
+  methods: {
+    view_video() {
+      axios
+        .get("http://localhost:8000/api/video_show?id=" + this.$route.params.id)
+        .then(res => {
+          console.log(res.data);
+          this.video_id = res.data.id;
+          this.video_title = res.data.title;
+          this.video_url = res.data.videoURL;
+          this.user_email = res.data.user.email;
+          this.genre = res.data.genre;
+          this.video_list = res.data;
+          this.updated_day = res.data.updated_at;
+          this.user_id = res.data.user_id;
+          this.my_videos();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
 
-    axios
-      .get("http://localhost:8000/api/video_show?id=" + this.$route.params.id)
-      .then(res => {
-        console.log(res.data);
-        this.video_title = res.data.title;
-        this.video_url = res.data.videoURL;
-        this.user_id = res.data.user_id;
-        this.genre = res.data.genre;
-        this.video_list = res.data;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    my_videos() {
+      axios
+        .get("http://localhost:8000/api/my_videos?id=" + this.user_id)
+        .then(res => {
+          console.log(res.data);
+          this.more_videos = res.data;
+          console.log(this.more_videos);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 };
 </script>

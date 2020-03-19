@@ -20,7 +20,7 @@
 
     <v-app-bar app color="red darken-1" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Application</v-toolbar-title>
+      <v-toolbar-title>Hello Creator</v-toolbar-title>
 
       <v-row justify="end" v-if="this.$store.getters.check_login == false">
         <v-btn icon @click="$router.push({name: 'login'})">

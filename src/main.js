@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store";
 import "./registerServiceWorker";
 import vuetify from "./plugins/vuetify";
+import firebase from "./plugins/Firebase";
 import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@mdi/font/css/materialdesignicons.css";
 import "@babel/polyfill";

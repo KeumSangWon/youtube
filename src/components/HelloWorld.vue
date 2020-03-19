@@ -1,120 +1,53 @@
 <template>
   <v-container>
     <v-layout text-center wrap>
-      <v-flex xs12>
-        <v-img :src="require('../assets/logo.svg')" class="my-3" contain height="200"></v-img>
-      </v-flex>
+      <v-row justify-center row warp>
+        <v-layout>
+          <v-flex xs12 sm12 md12>
+            <v-img
+              src="https://images.blackmagicdesign.com/images/products/blackmagicpocketcinemacamera/accessories/hero-md.jpg?_v=1564718600"
+              max-width="100%"
+              max-height="500"
+            ></v-img>
+            <br />
+            <br />
+            <br />
 
-      <v-flex mb-4>
-        <h1 class="display-2 font-weight-bold mb-3">{{$store.state.user_id}}</h1>
-        <p class="subheading font-weight-regular">
-          For help and collaboration with other Vuetify developers,
-          <br />please join our online
-          <a
-            href="https://community.vuetifyjs.com"
-            target="_blank"
-          >Discord Community</a>
-        </p>
-      </v-flex>
+            <v-flex display-4 font-weight-medium>Welcome to Hello Creator</v-flex>
+            <br />
+            <br />
+            <br />
+            <v-flex
+              display-1
+              font-regular
+            >This site connects the YouTuber and the editor you need. They can also be obtained by posting their own videos or by presenting conditions to appeal to them.</v-flex>
+            <br />
+            <br />
+            <v-flex display-1 font-regular>Find the right person for you.</v-flex>
 
-      <v-flex mb-5 xs12>
-        <h2 class="headline font-weight-bold mb-3">What's next?</h2>
-
-        <v-layout justify-center>
-          <a
-            v-for="(next, i) in whatsNext"
-            :key="i"
-            :href="next.href"
-            class="subheading mx-3"
-            target="_blank"
-          >{{ next.text }}</a>
+            <v-flex display-1 font-regular>Let's Start</v-flex>
+            <br />
+            <br />
+            <v-flex>
+              <v-btn
+                color="red darken-1"
+                dark
+                width="10%"
+                height="80"
+                @click="$router.push({ name: 'login'})"
+              >
+                <v-icon size="60">play_circle_filled</v-icon>
+              </v-btn>
+            </v-flex>
+          </v-flex>
         </v-layout>
-      </v-flex>
-
-      <v-flex xs12 mb-5>
-        <h2 class="headline font-weight-bold mb-3">Important Links</h2>
-
-        <v-layout justify-center>
-          <a
-            v-for="(link, i) in importantLinks"
-            :key="i"
-            :href="link.href"
-            class="subheading mx-3"
-            target="_blank"
-          >{{ link.text }}</a>
-        </v-layout>
-      </v-flex>
-
-      <v-flex xs12 mb-5>
-        <h2 class="headline font-weight-bold mb-3">Ecosystem</h2>
-
-        <v-layout justify-center>
-          <a
-            v-for="(eco, i) in ecosystem"
-            :key="i"
-            :href="eco.href"
-            class="subheading mx-3"
-            target="_blank"
-          >{{ eco.text }}</a>
-        </v-layout>
-      </v-flex>
+      </v-row>
     </v-layout>
   </v-container>
 </template>
 
 <script>
 export default {
-  data: () => ({
-    ecosystem: [
-      {
-        text: "vuetify-loader",
-        href: "https://github.com/vuetifyjs/vuetify-loader"
-      },
-      {
-        text: "github",
-        href: "https://github.com/vuetifyjs/vuetify"
-      },
-      {
-        text: "awesome-vuetify",
-        href: "https://github.com/vuetifyjs/awesome-vuetify"
-      }
-    ],
-    importantLinks: [
-      {
-        text: "Documentation",
-        href: "https://vuetifyjs.com"
-      },
-      {
-        text: "Chat",
-        href: "https://community.vuetifyjs.com"
-      },
-      {
-        text: "Made with Vuetify",
-        href: "https://madewithvuejs.com/vuetify"
-      },
-      {
-        text: "Twitter",
-        href: "https://twitter.com/vuetifyjs"
-      },
-      {
-        text: "Articles",
-        href: "https://medium.com/vuetify"
-      }
-    ],
-    whatsNext: [
-      {
-        text: "Explore components",
-        href: "https://vuetifyjs.com/components/api-explorer"
-      },
-      {
-        text: "Select a layout",
-        href: "https://vuetifyjs.com/layout/pre-defined"
-      },
-      {
-        text: "Frequently Asked Questions",
-        href: "https://vuetifyjs.com/getting-started/frequently-asked-questions"
-      }
-    ]
-  })
+  data: () => ({})
 };
 </script>

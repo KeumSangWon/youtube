@@ -55,52 +55,16 @@ export default {
   props: {
     source: String
   },
+
   data: () => ({
     drawer: false,
     email: "",
     password: ""
   }),
+
   methods: {
     ...mapActions(["login"])
-    // login() {
-    // axios
-    //   .post("http://localhost:8000/api/login", {
-    //     email: this.email,
-    //     password: this.password
-    //   })
-    //   .then(res => {
-    //     localStorage.setItem("user_token", res.data.token);
-    //     getUserInfo();
-    //     this.email = "";
-    //     this.password = "";
-    //     this.$store.dispatch("check_login", true);
-    //     router.push({ name: "myPage" });
-    //     console.log(res);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //     console.log(err.response);
-    //   });
   }
-  // getUserInfo({ commit }) {
-  //   let token = localStorage.getItem("user_token");
-  //   let config = {
-  //     headers: {
-  //       user_token: token
-  //     }
-  //   };
-  //   axios
-  //     .get("http://localhost:8000/api/profile", config)
-  //     .then(res => {
-  //       console.log(res.data.user);
-  //       return res.data;
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //       alert("check your ID and Password");
-  //     });
-  // }
-  // }
 };
 </script>
 

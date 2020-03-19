@@ -142,7 +142,11 @@
             :show-size="1000"
           >
             <template v-slot:selection="{ index, text }">
-              <v-chip v-if="index < 2" color="red darken-1" dark label small>{{ text }}</v-chip>
+              <v-chip v-if="index < 2" color="red darken-1" dark label small>
+                {{
+                text
+                }}
+              </v-chip>
 
               <span
                 v-else-if="index === 2"
@@ -150,13 +154,14 @@
               >+{{ files.length - 2 }} File(s)</span>
             </template>
           </v-file-input>
-
+          <v-layout justify-end>
+            <v-btn color="red darken-1" dark @click="upload" :loading="loding">Upload</v-btn>
+          </v-layout>
           <br />
 
           <v-textarea outlined auto-grow label="Enter explanation about Video" v-model="textra"></v-textarea>
           <v-layout justify-center>
             <v-btn color="red darken-1" dark type="submit">ok</v-btn>
-            {{this.$store.getters.user_id}}
           </v-layout>
         </v-form>
       </v-flex>
@@ -189,7 +194,8 @@ export default {
     academic: [],
     language: [],
     etc: [],
-    files: "",
+    files: [],
+    loding: false,
     textra: "",
     gender: 0
   }),
@@ -226,7 +232,7 @@ export default {
           salary: this.salary,
           career: this.career,
           textra: this.textra,
-          file: this.files,
+          file: this.files[0].name,
           recruitment_type: this.recruitment_type,
           skill: this.skill,
           genre: this.genre,
@@ -254,7 +260,63 @@ export default {
           console.log(err);
           console.log(err.response);
         }); // end catch
-    } //end ok
+    }, //end ok
+    upload() {
+      console.log(this.files);
+      const storageRef = this.$firebase.storage().ref();
+      this.loding = true;
+      const uploadTask = storageRef
+        .child(this.files[0].name)
+        .put(this.files[0]);
+
+      var storage = this.$firebase.storage;
+
+      uploadTask.on(
+        storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+        snapshot => {
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          var progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          switch (snapshot.state) {
+            case storage.TaskState.PAUSED: // or 'paused'
+              console.log("Upload is paused");
+              break;
+            case storage.TaskState.RUNNING: // or 'running'
+              console.log("Upload is running");
+              break;
+          }
+        },
+        error => {
+          // A full list of error codes is available at
+          // https://firebase.google.com/docs/storage/web/handle-errors
+          switch (error.code) {
+            case "storage/unauthorized":
+              // User doesn't have permission to access the object
+              console.error("storage/unauthorized");
+              break;
+
+            case "storage/canceled":
+              // User canceled the upload
+              console.error("storage/canceled");
+              break;
+
+            case "storage/unknown":
+              // Unknown error occurred, inspect error.serverResponse
+              console.error("storage/unknown");
+              break;
+          }
+          this.loding = false;
+        },
+        () => {
+          // Upload completed successfully, now we can get the download URL
+          uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+            console.log("File available at", downloadURL);
+          });
+          this.loding = false;
+        }
+      );
+    } //end upload
   }
 };
 </script>

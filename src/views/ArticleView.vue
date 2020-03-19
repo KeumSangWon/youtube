@@ -9,12 +9,26 @@
           <v-btn
             color="red darken-1"
             class="white--text"
-            @click="$router.push({name: 'recruitUpdate',  params:{ data: item_list} })"
-          >수정하기</v-btn>&nbsp;&nbsp;
-          <v-btn color="red darken-1" class="white--text" @click="destroy()">삭제하기</v-btn>
+            @click="
+              $router.push({
+                name: 'recruitUpdate',
+                params: { data: item_list }
+              })
+            "
+            >수정하기</v-btn
+          >&nbsp;&nbsp;
+          <v-btn color="red darken-1" class="white--text" @click="destroy()"
+            >삭제하기</v-btn
+          >
         </v-layout>
         <br />
-        <v-text-field label="Name" placeholder="Name" v-model="item_user.name" outlined readonly></v-text-field>
+        <v-text-field
+          label="Name"
+          placeholder="Name"
+          v-model="item_user.name"
+          outlined
+          readonly
+        ></v-text-field>
         <v-text-field
           label="Gender"
           placeholder="Gender_item"
@@ -42,7 +56,8 @@
           v-model="item_skill[0].skill_name"
           outlined
           readonly
-        ></v-text-field>-->
+        ></v-text-field
+        >-->
         <v-text-field
           label="Salaty"
           placeholder="Salary_item"
@@ -88,8 +103,13 @@
           readonly
         ></v-textarea>
         <v-layout justify-center>
-          <v-btn color="red darken-1" class="white--text">지원하기</v-btn>&nbsp;&nbsp;
-          <v-btn color="red darken-1" class="white--text" @click="ok()">돌아가기</v-btn>
+          <v-btn color="red darken-1" class="white--text" @click="apply()"
+            >지원하기</v-btn
+          >&nbsp;&nbsp;
+          <v-btn color="red darken-1" class="white--text" @click="ok()"
+            >돌아가기</v-btn
+          >
+          <v-btn @click="download()">Download</v-btn>
         </v-layout>
       </v-flex>
     </v-layout>
@@ -150,6 +170,53 @@ export default {
         })
         .catch(err => {
           console.log(err);
+        });
+    },
+    apply() {
+      axios
+        .post("http://localhost:8000/api/apply", {
+          user_id: this.$store.getters.user_id,
+          recruit_id: this.$route.params.id
+        }) //end post
+        .then(res => {
+          console.log(res);
+          router.push({ name: "article" });
+        }) // end then
+        .catch(err => {
+          console.log(err);
+          console.log(err.response);
+        }); // end catch")
+    },
+    download() {
+      // Points to the root reference
+      var storageRef = this.$firebase.storage().ref();
+      var starsRef = storageRef.child("icons8-padlock-512.png");
+
+      // Get the download URL
+      starsRef
+        .getDownloadURL()
+        .then(function(url) {
+          // Insert url into an <img> tag to "download"
+        })
+        .catch(function(error) {
+          // A full list of error codes is available at
+          // https://firebase.google.com/docs/storage/web/handle-errors
+          switch (error.code) {
+            case "storage/object-not-found":
+              // File doesn't exist
+              break;
+
+            case "storage/unauthorized":
+              // User doesn't have permission to access the object
+              break;
+
+            case "storage/canceled":
+              // User canceled the upload
+              break;
+            case "storage/unknown":
+              // Unknown error occurred, inspect the server response
+              break;
+          }
         });
     }
   }

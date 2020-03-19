@@ -9,8 +9,10 @@ export default new Vuex.Store({
   state: {
     user_type: 0,
     user_id: 0,
-    check_login: false
+    check_login: false,
+    user_info: []
   },
+
   getters: {
     user_id: function(state) {
       return state.user_id;
@@ -20,8 +22,12 @@ export default new Vuex.Store({
     },
     check_login: function(state) {
       return state.check_login;
+    },
+    user_info: function(state) {
+      return state.user_info;
     }
   },
+
   mutations: {
     user_type: (state, payload) => {
       state.user_type = payload;
@@ -31,6 +37,9 @@ export default new Vuex.Store({
     },
     check_login: (state, payload) => {
       state.check_login = payload;
+    },
+    user_info: (state, payload) => {
+      state.user_info = payload;
     }
   },
   actions: {
@@ -40,6 +49,9 @@ export default new Vuex.Store({
 
     user_id: ({ commit }, payload) => {
       commit("user_id", payload);
+    },
+    user_info: ({ commit }, payload) => {
+      commit("user_info", payload);
     },
 
     check_login: ({ commit }, payload) => {
@@ -59,7 +71,7 @@ export default new Vuex.Store({
         .then(res => {
           localStorage.setItem("user_token", res.data.token);
           dispatch("getUserInfo");
-          router.push({ name: "home" });
+          router.push({ name: "myPage" });
           // console.log(res);
         })
         .catch(err => {
@@ -82,6 +94,7 @@ export default new Vuex.Store({
           // console.log(res.data.user);
           dispatch("check_login", localStorage.user_token);
           dispatch("user_id", res.data.user.id);
+          dispatch("user_info", res.data);
           dispatch("getUserType", res.data.user.id);
         })
         .catch(err => {
